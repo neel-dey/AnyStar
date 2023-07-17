@@ -35,8 +35,8 @@ If you find anything in the paper or repository useful, please consider citing:
 
 ## Roadmap
 - [x] Add data generation and training code.
-- [ ] Upload weights for the current paper model.
-- [ ] Add example inference notebook.
+- [x] Upload weights for the current paper model.
+- [x] Add example inference script.
 - [ ] Add best practices doc.
 - [ ] Upload improved weights.
 
@@ -91,8 +91,55 @@ python step3_augmentation_pipeline.py
 conda deactivate
 ```
 
+## Inference (try on your own data!)
+Here's a script to run AnyStar-mix (or any StarDist network) on your own images.
+The paper version of AnyStar-mix's weights are available 
+[here](https://drive.google.com/drive/folders/1yiY_vBR2GQW9zJzgUPRWeIecN4ZnCi3c?usp=sharing). 
+By default,this script will look for a subfolder in `./models/` (e.g. `models/anystar-mix`).
+
+Here's a sample call:
+```bash
+conda activate csbdeep
+python infer.py --image_folder /path/to/folder 
+```
+
+**IMPORTANT**: as the network was trained on isotropic 64^3 crops of images as in
+the figure above, use `--scale` to resize your images prior to segmentation such that
+the target instances are fully contained within the sliding window (defined by
+`--n_tiles`) and are roughly isotropic in spacing.
+
+Full CLI:
+```bash
+usage: infer.py [-h] [--image_folder IMAGE_FOLDER] [--image_extension IMAGE_EXTENSION]
+                [--model_folder MODEL_FOLDER] [--model_name MODEL_NAME] [--prob_thresh PROB_THRESH]
+                [--nms_thresh NMS_THRESH] [--scale SCALE SCALE SCALE]
+                [--n_tiles N_TILES N_TILES N_TILES]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --image_folder IMAGE_FOLDER
+                        path containing images to segment. nii.gz or tiff imgs accepted.
+  --image_extension IMAGE_EXTENSION
+                        nii.gz or tiff imgs accepted.
+  --model_folder MODEL_FOLDER
+                        name of folder containing multiple model subfolders
+  --model_name MODEL_NAME
+                        name of model subfolder
+  --prob_thresh PROB_THRESH
+                        Softmax detection threshold. Lower detects more and vice versa.
+  --nms_thresh NMS_THRESH
+                        Non-max suppression threshold. Lower value suppresses more.
+  --scale SCALE SCALE SCALE
+                        Resizing ratios per dimension for inference
+  --n_tiles N_TILES N_TILES N_TILES
+                        N. tiles/dim for sliding window. Default: let StarDist decide
+
+```
+
 ## Train
-Sample training run, assuming that data is in `./generative_model/outputs/`.
+If you want to train the segmentation network from scratch, here is a sample
+training run, assuming that data is in `./generative_model/outputs/`.
+
 ```bash
 conda activate csbdeep
 python train.py --epochs 180 --steps 1000 --name sample_run

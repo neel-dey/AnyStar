@@ -20,10 +20,16 @@ def training_args():
         help='path to folder containing images and labels subfolders'
     )
     parser.add_argument(
-        '--dataset_ims', type=str, help='base name of training image folder'
+        '--dataset_ims',
+        type=str,
+        default='training_images',
+        help='base name of training image folder'
     )
     parser.add_argument(
-        '--dataset_labs', type=str, help='base name of training label folder'
+        '--dataset_labs',
+        type=str,
+        default='training_labels',
+        help='base name of training label folder'
     )
     parser.add_argument(
         '--name', type=str, help='folder name to store run results'
@@ -32,10 +38,16 @@ def training_args():
         '--lr', type=float, default=2e-4, help='Adam learning rate'
     )
     parser.add_argument(
-        '--losswt_1', type=float, default=1, help='centerness loss weight'
+        '--losswt_1',
+        type=float,
+        default=1,
+        help='centerness cross-entropy loss weight'
     )
     parser.add_argument(
-        '--losswt_2', type=float, default=0.2, help='distance map loss weight'
+        '--losswt_2',
+        type=float,
+        default=0.2,
+        help='distance map regression loss weight'
     )
     parser.add_argument(
         '--nrays', type=int, default=96, help='number of 3D rays for polyhedra'
