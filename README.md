@@ -17,6 +17,8 @@ CPU-bottlenecks training. Instead we sample a ~million samples offline first
 and then use further fast augmentations during training.
 - A training script `./train.py` to train a 3D [StarDist](https://github.com/stardist)
 network on the synthesized data.
+- An inference script `./infer.py` and a pretrained model to segment your own 
+star-convex instances :)
 
 ## Citation
 
@@ -72,26 +74,7 @@ pip install edt
 conda deactivate
 ```
 
-## Synthesize offline samples
-![Sample synthesized training samples](https://www.neeldey.com/files/arxiv23_anystar_samples.png)
-
-NOTE: Running the data synthesizer with the default settings will use a few
-terabytes of storage. You may want to reduce `--n_stacks` in step1,
-`--n_imgs` in step2, and `--n_offline_augmentations` in step3.
-
-```bash
-conda activate datagen_initial
-cd ./scripts/
-python step1_label_synthesis.py
-python step2_GMM_Perlin_image_synthesis.py
-conda deactivate
-
-conda activate datagen_augment
-python step3_augmentation_pipeline.py
-conda deactivate
-```
-
-## Inference (try on your own data!)
+## Inference (try it on your own data!)
 Here's a script to run AnyStar-mix (or any StarDist network) on your own images.
 The paper version of AnyStar-mix's weights are available 
 [here](https://drive.google.com/drive/folders/1yiY_vBR2GQW9zJzgUPRWeIecN4ZnCi3c?usp=sharing). 
@@ -104,7 +87,7 @@ python infer.py --image_folder /path/to/folder
 ```
 
 **IMPORTANT**: as the network was trained on isotropic 64^3 crops of images as in
-the figure above, use `--scale` to resize your images prior to segmentation such that
+the figure below, use `--scale` to resize your images prior to segmentation such that
 the target instances are fully contained within the sliding window (defined by
 `--n_tiles`) and are roughly isotropic in spacing.
 
@@ -134,6 +117,25 @@ optional arguments:
   --n_tiles N_TILES N_TILES N_TILES
                         N. tiles/dim for sliding window. Default: let StarDist decide
 
+```
+
+## Synthesize offline samples
+![Sample synthesized training samples](https://www.neeldey.com/files/arxiv23_anystar_samples.png)
+
+NOTE: Running the data synthesizer with the default settings will use a few
+terabytes of storage. You may want to reduce `--n_stacks` in step1,
+`--n_imgs` in step2, and `--n_offline_augmentations` in step3.
+
+```bash
+conda activate datagen_initial
+cd ./scripts/
+python step1_label_synthesis.py
+python step2_GMM_Perlin_image_synthesis.py
+conda deactivate
+
+conda activate datagen_augment
+python step3_augmentation_pipeline.py
+conda deactivate
 ```
 
 ## Train
