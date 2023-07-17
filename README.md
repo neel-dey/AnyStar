@@ -19,7 +19,7 @@ in step1, `--n_imgs` in step2, and `--n_offline_augmentations` in step3.
 
 ## Roadmap
 - [x] Add data generation and training code.
-- [x] Upload weights for current paper model.
+- [ ] Upload weights for current paper model.
 - [ ] Add example inference notebook.
 - [ ] Add best practices doc.
 - [ ] Upload improved weights.
