@@ -2,6 +2,8 @@
 
 ![Sample results on 5 datasets](https://www.neeldey.com/files/arxiv23_anystar_results.png)
 
+*paper link:* https://arxiv.org/abs/2307.07044
+
 AnyStar is a zero-shot 3D instance segmentation framework trained on purely
 synthetic data. It is meant to segment star-convex (e.g. nuclei and nodules)
 instances in 3D bio-microscopy and radiology. It is generally invariant to the
@@ -17,6 +19,9 @@ and then use further fast augmentations during training.
 network on the synthesized data.
 
 ## Citation
+
+If you find anything in the paper or repository useful, please consider citing:
+
 ```
 @misc{dey2023anystar,
       title={AnyStar: Domain randomized universal star-convex 3D instance segmentation}, 
