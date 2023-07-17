@@ -1,5 +1,7 @@
 # AnyStar
 
+![Sample results on 5 datasets](https://www.neeldey.com/files/arxiv23_anystar_results.png)
+
 AnyStar is a zero-shot 3D instance segmentation framework trained on purely
 synthetic data. It is meant to segment star-convex (e.g. nuclei and nodules)
 instances in 3D bio-microscopy and radiology. It is generally invariant to the
@@ -11,15 +13,24 @@ This repository contains:
 generative model. While this can be run online with training, it significantly
 CPU-bottlenecks training. Instead we sample a ~million samples offline first
 and then use further fast augmentations during training.
-- A training script `./train.py` to 
+- A training script `./train.py` to train a 3D [StarDist](https://github.com/stardist)
+network on the synthesized data.
 
-NOTE: Running the data synthesizer with the default settings will use a few
-terabytes of memory to store the samples. You may want to reduce `--n_stacks`
-in step1, `--n_imgs` in step2, and `--n_offline_augmentations` in step3.
+## Citation
+```
+@misc{dey2023anystar,
+      title={AnyStar: Domain randomized universal star-convex 3D instance segmentation}, 
+      author={Neel Dey and S. Mazdak Abulnaga and Benjamin Billot and Esra Abaci Turk and P. Ellen Grant and Adrian V. Dalca and Polina Golland},
+      year={2023},
+      eprint={2307.07044},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 
 ## Roadmap
 - [x] Add data generation and training code.
-- [ ] Upload weights for current paper model.
+- [ ] Upload weights for the current paper model.
 - [ ] Add example inference notebook.
 - [ ] Add best practices doc.
 - [ ] Upload improved weights.
@@ -57,6 +68,12 @@ conda deactivate
 ```
 
 ## Synthesize offline samples
+![Sample synthesized training samples](https://www.neeldey.com/files/arxiv23_anystar_samples.png)
+
+NOTE: Running the data synthesizer with the default settings will use a few
+terabytes of storage. You may want to reduce `--n_stacks` in step1,
+`--n_imgs` in step2, and `--n_offline_augmentations` in step3.
+
 ```bash
 conda activate datagen_initial
 cd ./scripts/

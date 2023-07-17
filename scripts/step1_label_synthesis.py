@@ -1,3 +1,8 @@
+"""
+We gratefully acknowledge Martin Weigert for providing a reference OpenCL
+implementation of a nucleus generator upon which this python script is based.
+"""
+
 import numpy as np
 import os
 import nibabel as nib
@@ -118,7 +123,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--r_max',
         type=int,
-        default=16,
+        default=None,
         help='Used if radius randomized. Specify min sphere radius in voxels',
     )
     parser.add_argument(
