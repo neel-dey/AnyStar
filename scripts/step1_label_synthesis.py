@@ -107,6 +107,8 @@ def initial_label_generator(grid_size=128, r_mean=12):
 
 
 if __name__ == '__main__':
+    np.random.seed(12345)
+
     parser = argparse.ArgumentParser(description='')
     parser.add_argument(
         '--grid_size',
@@ -146,7 +148,7 @@ if __name__ == '__main__':
             label = initial_label_generator(args.grid_size, args.r_mean)
         else:
             radius = np.random.randint(args.r_min, args.r_max + 1)
-            label = initial_label_generator(args.grid_size, args.r_mean)
+            label = initial_label_generator(args.grid_size, radius)
         os.makedirs(
             "../generative_model/outputs/initial_labels/", exist_ok=True
         )

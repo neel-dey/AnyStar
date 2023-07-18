@@ -17,6 +17,8 @@ import neurite as ne
 
 
 if __name__ == '__main__':
+    np.random.seed(12345)
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--n_imgs',
