@@ -1,14 +1,16 @@
 # AnyStar
+### [Paper](https://arxiv.org/abs/2307.07044) | [Colab notebook](https://colab.research.google.com/drive/1jjgVYQ1acXHsZyEQzVWGMDU84tvsDxth?usp=sharing)
 
 ![Sample results on 5 datasets](https://www.neeldey.com/files/arxiv23_anystar_results.png)
-
-*paper link:* https://arxiv.org/abs/2307.07044
 
 AnyStar is a zero-shot 3D instance segmentation framework trained on purely
 synthetic data. It is meant to segment star-convex (e.g. nuclei and nodules)
 instances in 3D bio-microscopy and radiology. It is generally invariant to the
 appearance (blur, noise, intensity, contrast) and environment of the instance
 and requires no retraining or adaptation for new datasets.
+
+Please see the [Colab notebook](https://colab.research.google.com/drive/1jjgVYQ1acXHsZyEQzVWGMDU84tvsDxth?usp=sharing)
+for examples of how to use the pretrained network.
 
 This repository contains:
 - Scripts (in `./scripts/`) to generate offline samples from the AnyStar-mix
@@ -19,6 +21,8 @@ and then use further fast augmentations during training.
 network on the synthesized data.
 - An inference script `./infer.py` and a pretrained model to segment your own 
 star-convex instances :)
+
+
 
 ## Citation
 
@@ -39,8 +43,8 @@ If you find anything in the paper or repository useful, please consider citing:
 - [x] Add data generation and training code.
 - [x] Upload weights for the current paper model.
 - [x] Add example inference script.
-- [ ] Add best practices doc.
-- [ ] Upload improved weights.
+- [x] Add Colab notebook with best practices.
+- [ ] Simplify dependencies.
 
 ## Set up dependencies
 We create two separate tensorflow and pytorch conda environments for data generation
@@ -75,7 +79,9 @@ conda deactivate
 ```
 
 ## Inference (try it on your own data!)
-Here's a script to run AnyStar-mix (or any StarDist network) on your own images.
+It's highly suggested to first check out the [Colab notebook](https://colab.research.google.com/drive/1jjgVYQ1acXHsZyEQzVWGMDU84tvsDxth?usp=sharing).
+
+After that, here's a script to run AnyStar-mix (or any StarDist network) on your own images.
 The paper version of AnyStar-mix's weights are available 
 [here](https://drive.google.com/drive/folders/1yiY_vBR2GQW9zJzgUPRWeIecN4ZnCi3c?usp=sharing). 
 By default,this script will look for a subfolder in `./models/` (e.g. `models/anystar-mix`).
@@ -86,10 +92,12 @@ conda activate csbdeep
 python infer.py --image_folder /path/to/folder 
 ```
 
-**IMPORTANT**: as the network was trained on isotropic 64^3 crops of images as in
-the figure below, use `--scale` to resize your images prior to segmentation such that
-the target instances are fully contained within the sliding window (defined by
-`--n_tiles`) and are roughly isotropic in spacing.
+**IMPORTANT**: Here are some best practices for getting optimal results:
+- As AnyStar uses [StarDist](https://github.com/stardist/stardist) as its base network, the predicted centerness probability and distance maps do not require any hyperparameters. However, for the visualized instance predictions, we need to provide thresholds for non-maximum suppression and probability. These hyperparameters are dataset (and sometimes image) specific, please play with `prob_thresh` and `nms_thresh` for optimal results! Reduce `prob_thresh` and increase `nms_thresh` to predict more instances and vice versa.
+- AnyStar was trained on 64^3 synthetic 3D isotropic images and real-world images significantly vary in grid size, we use sliding window inference. Please try to make sure each window is approximately 64^3 in size. This can be controlled by `n_tiles` and `scale`.
+- Rescale your image intensities to have min-max values of [0,1].
+
+See the docstring for [this function](https://github.com/stardist/stardist/blob/master/stardist/models/base.py#L634) for the full arguments list.
 
 Full CLI:
 ```bash
