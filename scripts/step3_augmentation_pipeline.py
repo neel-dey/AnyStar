@@ -86,7 +86,7 @@ def get_transforms():
                 sigma_z=(0.0, 0.333),
             ),
             RandRicianNoised(keys=["image"], prob=0.2, std=0.05),
-            RandGibbsNoised(keys=["image"], prob=0.5, alpha=(0.0, 1.0)),
+            RandGibbsNoised(keys=["image"], prob=0.5, alpha=(0.0, 0.5)),
             RandGaussianSharpend(keys=["image"], prob=0.25),
             RandHistogramShiftd(keys=["image"], prob=0.1),
             RandAxisFlipd(keys=["image", "label"], prob=1.0),
