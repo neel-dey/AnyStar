@@ -44,51 +44,37 @@ If you find anything in the paper or repository useful, please consider citing:
 - [x] Upload weights for the current paper model.
 - [x] Add example inference script.
 - [x] Add Colab notebook with best practices.
-- [ ] Simplify dependencies.
+- [x] Simplify dependencies.
 
 ## Set up dependencies
-We create two separate tensorflow and pytorch conda environments for data generation
-because the various VoxelMorph / MONAI / CSBDeep / etc. repos dont play well together.
-We then have a separate training environment.
+We use an environment with both tensorflow (gpu) and pytorch (cpu) in it for all
+of the scripts in this repo.
 
+Install from a `yml` file:
 ```bash
-# Create environment for initial label and appearance synthesis:
-conda create --name datagen_initial python=3.8
-conda activate datagen_initial
-pip install tensorflow==2.6 voxelmorph natsort keras==2.6
-pip install --upgrade "protobuf<=3.20.1"
+conda env create -f environment.yml
+```
+
+Or if you prefer to install everything manually:
+```bash
+conda create -n anystar python=3.9
+conda activate anystar
+pip install tensorflow==2.13.*
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install monai==1.1.0 voxelmorph natsort nibabel stardist edt
 pip install git+https://github.com/pvigier/perlin-numpy
-conda deactivate
-
-# Create environment for offline augmentation pipeline:
-conda create --name datagen_augment python=3.9.15
-conda activate datagen_augment
-conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 pytorch-cuda=11.7 -c pytorch -c nvidia
-pip install monai==1.1.0 natsort scikit-image nibabel tqdm
-conda deactivate
-
-# Create environment for StarDist training:
-conda env create -f https://raw.githubusercontent.com/CSBDeep/CSBDeep/master/extras/environment-gpu-py3.8-tf2.4.yml
-conda activate csbdeep
-pip install stardist
-pip install nibabel
-conda install -c conda-forge cudatoolkit-dev
-conda install -c conda-forge libstdcxx-ng
-pip install edt
-conda deactivate
 ```
 
 ## Inference (try it on your own data!)
 It's highly suggested to first check out the [Colab notebook](https://colab.research.google.com/drive/1jjgVYQ1acXHsZyEQzVWGMDU84tvsDxth?usp=sharing).
 
-After that, here's a script to run AnyStar-mix (or any StarDist network) on your own images.
+After that, here's a script to locally run AnyStar-mix (or any StarDist network) on your own images.
 The paper version of AnyStar-mix's weights are available 
 [here](https://drive.google.com/drive/folders/1yiY_vBR2GQW9zJzgUPRWeIecN4ZnCi3c?usp=sharing). 
 By default,this script will look for a subfolder in `./models/` (e.g. `models/anystar-mix`).
 
 Here's a sample call:
 ```bash
-conda activate csbdeep
 python infer.py --image_folder /path/to/folder 
 ```
 
@@ -135,15 +121,10 @@ terabytes of storage. You may want to reduce `--n_stacks` in step1,
 `--n_imgs` in step2, and `--n_offline_augmentations` in step3.
 
 ```bash
-conda activate datagen_initial
 cd ./scripts/
 python step1_label_synthesis.py
 python step2_GMM_Perlin_image_synthesis.py
-conda deactivate
-
-conda activate datagen_augment
 python step3_augmentation_pipeline.py
-conda deactivate
 ```
 
 ## Train
@@ -151,7 +132,6 @@ If you want to train the segmentation network from scratch, here is a sample
 training run, assuming that data is in `./generative_model/outputs/`.
 
 ```bash
-conda activate csbdeep
 python train.py --epochs 180 --steps 1000 --name sample_run
 ```
 

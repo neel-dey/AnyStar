@@ -60,9 +60,10 @@ if __name__ == '__main__':
     imgs = np.random.RandomState(seed=rng_seed).permutation(imgs)
     labs = np.random.RandomState(seed=rng_seed).permutation(labs)
     
-    # Set aside 100 images to use as a synthetic 'validation set'
+    # Set aside `nval_samples` images to use as a synthetic 'validation set'
     # Required as we do not use any real data to decide when to stop training.
     # Only used to decide when to stop training:
+    assert nval_samples < len(imgs), "More val imgs specified than imgs exist"
     vimgs = imgs[-nval_samples:].copy()
     vlabs = labs[-nval_samples:].copy()
     
