@@ -120,6 +120,8 @@ NOTE: Running the data synthesizer with the default settings will use a few
 terabytes of storage. You may want to reduce `--n_stacks` in step1,
 `--n_imgs` in step2, and `--n_offline_augmentations` in step3.
 
+Run `python <scriptname.py> -h` to see script-specific CLIs.
+
 ```bash
 cd ./scripts/
 python step1_label_synthesis.py
