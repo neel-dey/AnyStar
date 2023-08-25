@@ -1,5 +1,5 @@
 # AnyStar
-### [Paper](https://arxiv.org/abs/2307.07044) | [Colab notebook](https://colab.research.google.com/drive/1jjgVYQ1acXHsZyEQzVWGMDU84tvsDxth?usp=sharing)
+### [Project page](https://www.neeldey.com/any-star/) | [Paper](https://arxiv.org/abs/2307.07044) | [Colab notebook](https://colab.research.google.com/drive/1jjgVYQ1acXHsZyEQzVWGMDU84tvsDxth?usp=sharing)
 
 ![Sample results on 5 datasets](https://www.neeldey.com/files/arxiv23_anystar_results.png)
 
