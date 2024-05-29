@@ -29,7 +29,7 @@ def calculate_distance(center_coords, grid_size=128):
     # Assign n_vox x n_spheres array:
     distances = np.zeros((grid_size**3, len(center_coords)))
 
-    # list of all voxel indices:
+    # array of all voxel indices:
     x = np.arange(grid_size)
     y = np.arange(grid_size)
     z = np.arange(grid_size)
