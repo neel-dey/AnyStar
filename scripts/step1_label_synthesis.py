@@ -29,17 +29,18 @@ def calculate_distance(center_coords, grid_size=128):
     # Assign n_vox x n_spheres array:
     distances = np.zeros((grid_size**3, len(center_coords)))
 
-    # list of all voxel indices:
-    vox_coord = list(
-        product(range(grid_size), range(grid_size), range(grid_size)),
-    )
+    # array of all voxel indices:
+    x = np.arange(grid_size)
+    y = np.arange(grid_size)
+    z = np.arange(grid_size)
+    xx, yy, zz = np.meshgrid(x, y, z, indexing="ij")
+    vox_coord = np.stack([xx.ravel(), yy.ravel(), zz.ravel()], axis=1)
 
     # Calc. distance between each voxel and each sphere, loop through voxels:
-    # There should be a much faster way using vectorization.
-    for i in range(distances.shape[0]):
-        distances[i] = np.sqrt(
-            np.sum((np.array(vox_coord[i]) - center_coords)**2, axis=1)
-        )
+    # use broadcasting to speed things up
+    distances = np.sqrt(                                                  
+        np.sum((vox_coord[:, np.newaxis, :] - center_coords) ** 2, axis=2)
+    )                                                                     
     
     return distances
 
