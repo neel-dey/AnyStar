@@ -32,7 +32,7 @@ class FileData(Sequence):
         return len(self.filenames)
 
     def __getitem__(self, i):
-        if self.ftype == 'nii.gz' or 'nii':
+        if self.ftype == 'nii.gz' or self.ftype == 'nii':
             x = nib.load(self.filenames[i]).get_fdata().astype(np.float32)
         elif self.ftype == 'tiff' or self.ftype == 'tif':
             x = imread(self.filenames[i]).astype(np.float32)
@@ -146,8 +146,9 @@ if __name__ == '__main__':
             scale=args.scale,
         )
         # Save segmentations:
+        output_name = os.path.splitext(name)[0] + ".nii.gz"
         nib.save(
             nib.Nifti1Image(labels, np.eye(4)),
-            output_dir + '/{}'.format(name)
+            output_dir + '/{}'.format(output_name)
         )
         
